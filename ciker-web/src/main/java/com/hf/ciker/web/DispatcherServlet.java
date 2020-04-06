@@ -1,10 +1,7 @@
 package com.hf.ciker.web;
 
 import com.hf.ciker.commons.utils.*;
-import com.hf.ciker.web.beans.Data;
-import com.hf.ciker.web.beans.Handler;
-import com.hf.ciker.web.beans.Param;
-import com.hf.ciker.web.beans.View;
+import com.hf.ciker.web.beans.*;
 import com.hf.ciker.web.helper.BeanHelper;
 import com.hf.ciker.web.helper.ConfigHelper;
 import com.hf.ciker.web.helper.ControllerHelper;
@@ -77,18 +74,14 @@ public class DispatcherServlet extends HttpServlet {
                         req.getRequestDispatcher(ConfigHelper.getAppJspPath()+viewPath).forward(req,resp);
                     }
                 }
-            }else if(result instanceof Data){
-                Data data = (Data) result;
-                Object model = data.getModel();
-                if (model != null){
-                    resp.setContentType("application/json");
-                    resp.setCharacterEncoding("UTF-8");
-                    PrintWriter writer = resp.getWriter();
-                    String json = JsonUil.toJson(model);
-                    writer.write(json);
-                    writer.flush();
-                    writer.close();
-                }
+            }else if(result instanceof ServerResponse){
+                resp.setContentType("application/json");
+                resp.setCharacterEncoding("UTF-8");
+                PrintWriter writer = resp.getWriter();
+                String json = JsonUil.toJson(result);
+                writer.write(json);
+                writer.flush();
+                writer.close();
             }else{
                 throw new RuntimeException("result typr  not found ");
             }

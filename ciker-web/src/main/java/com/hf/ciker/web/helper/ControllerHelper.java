@@ -24,7 +24,7 @@ public class ControllerHelper {
                         if(method.isAnnotationPresent(RequestMapping.class)){
                             RequestMapping requestMapping = method.getAnnotation(RequestMapping.class);
                             RequestMethod requestMethod = requestMapping.method();
-                            String requestPath = requestMapping.path();
+                            String requestPath = requestMapping.value();
                             Request request = new Request(requestMethod,requestPath);
                             Handler handler = new Handler(controllerClass,method);
                             ACTION_MAP.put(request,handler);

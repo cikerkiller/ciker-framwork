@@ -21,8 +21,10 @@ public class RequestMethodUtil {
             return RequestMethod.PUT;
         }else if(StringUtils.equalsIgnoreCase("TRACE",requestMethod)) {
             return RequestMethod.TRACE;
+        }else if(StringUtils.equalsIgnoreCase("PATCH",requestMethod)) {
+            return RequestMethod.PATCH;
         }else{
-            throw  new RuntimeException("not found requstMethod : "+requestMethod);
+            throw new RuntimeException("not found requstMethod : "+requestMethod);
         }
 
     }

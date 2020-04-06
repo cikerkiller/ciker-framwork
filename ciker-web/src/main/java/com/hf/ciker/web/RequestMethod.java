@@ -7,5 +7,6 @@ public enum RequestMethod {
     HEAD,
     DELETE,
     TRACE,
+    PATCH,
     OPTIONS;
 }

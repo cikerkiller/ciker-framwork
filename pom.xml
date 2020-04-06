@@ -7,6 +7,15 @@
     <groupId>com.hf.ciker</groupId>
     <artifactId>ciker-framework</artifactId>
     <version>1.0.0</version>
+    <modules>
+        <module>ciker-user</module>
+        <module>ciker-web</module>
+        <module>ciker-commons</module>
+        <module>ciker-core</module>
+    </modules>
+    <packaging>pom</packaging>
+
+
 
     <dependencies>
         <dependency>

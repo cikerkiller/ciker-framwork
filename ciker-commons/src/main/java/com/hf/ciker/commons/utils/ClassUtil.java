@@ -31,7 +31,7 @@ public class ClassUtil {
     }
 
     public static Set<Class<?>> getClassSet(String packageName){
-        Set<Class<?>> classSet =     new HashSet<>();
+        Set<Class<?>> classSet =  new HashSet<>();
         try {
             Enumeration<URL> urls = getClassLoader().getResources(packageName.replace(".","/")+"/");
             while (urls.hasMoreElements()){

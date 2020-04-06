@@ -99,4 +99,10 @@ public class DispatcherServlet extends HttpServlet {
         ServletRegistration defaultServlet = servletContext.getServletRegistration("default");
         defaultServlet.addMapping(ConfigHelper.getAppAssetPath()+"*");
     }
+
+    @Override
+    public void destroy() {
+        LogUtil.info("<<<======================项目停止运行======================>>>");
+        super.destroy();
+    }
 }

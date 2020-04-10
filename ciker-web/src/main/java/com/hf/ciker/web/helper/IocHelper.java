@@ -2,7 +2,7 @@ package com.hf.ciker.web.helper;
 
 import com.hf.ciker.commons.utils.ReflectionUtil;
 import com.hf.ciker.web.annatations.Autowired;
-import org.apache.commons.collections.MapUtils;
+import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.ArrayUtils;
 
 import java.lang.reflect.Field;

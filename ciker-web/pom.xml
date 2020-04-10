@@ -17,7 +17,16 @@
         <dependency>
             <groupId>com.hf.ciker</groupId>
             <artifactId>ciker-core</artifactId>
-            <version>1.0.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>javax.servlet.jsp</groupId>
+            <artifactId>jsp-api</artifactId>
         </dependency>
     </dependencies>
 

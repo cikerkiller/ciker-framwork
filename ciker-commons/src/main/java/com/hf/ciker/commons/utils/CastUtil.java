@@ -2,6 +2,11 @@ package com.hf.ciker.commons.utils;
 
 import org.apache.commons.lang3.StringUtils;
 
+/**
+ * @desc 类型转换工具类
+ * @author ciker
+ * @date 2020-04-11
+ */
 public class CastUtil {
     public static String castString(Object obj,String defaultValue){
         return obj == null ? defaultValue : String.valueOf(obj);

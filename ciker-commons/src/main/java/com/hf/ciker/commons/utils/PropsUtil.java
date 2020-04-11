@@ -18,7 +18,7 @@ public class PropsUtil {
             prop = new Properties();
             prop.load(in);
         }catch (IOException e){
-            LogUtil.error("load properties error",e);
+            LogUtil.error("load properties error, fileName : {}", fileName, e);
         }finally {
             if (in != null){
                 try {

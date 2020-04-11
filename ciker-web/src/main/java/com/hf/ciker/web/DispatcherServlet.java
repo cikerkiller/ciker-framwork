@@ -45,7 +45,7 @@ public class DispatcherServlet extends HttpServlet {
                 String param = parameterNames.nextElement();
                 paramMap.put(param,req.getParameter(param));
             }
-            String body = CodecUtil.decodeURL(StreamUtil.getString(req.getInputStream()));
+            String body = CodecUtil.decodeURL(StreamUtil.getDataFromStream(req.getInputStream()));
             if(StringUtils.isNotEmpty(body)){
                 String[] params = StringUtils.split(body, "&");
                 for(String p : params){
@@ -81,7 +81,7 @@ public class DispatcherServlet extends HttpServlet {
                 resp.setContentType("application/json");
                 resp.setCharacterEncoding("UTF-8");
                 PrintWriter writer = resp.getWriter();
-                String json = JsonUil.toJson(result);
+                String json = JsonUtil.toJson(result);
                 writer.write(json);
                 writer.flush();
                 writer.close();

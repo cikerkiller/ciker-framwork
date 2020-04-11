@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
 
-public class JsonUil {
+public class JsonUtil {
 
     private static final ObjectMapper MAPPER = new ObjectMapper();
 
@@ -14,8 +14,7 @@ public class JsonUil {
         try {
             target = MAPPER.writeValueAsString(o);
         } catch (JsonProcessingException e) {
-            LogUtil.error("toJson error",e);
-            throw new RuntimeException(e);
+            LogUtil.error("toJson error, pre-json : {}", o, e);
         }
         return target;
     }
@@ -24,8 +23,7 @@ public class JsonUil {
         try {
             o = MAPPER.readValue(json,value);
         } catch (IOException e) {
-            LogUtil.error("fromJson error",e);
-            throw new RuntimeException(e);
+            LogUtil.error("fromJson error, json : {}, value : {}", json, value, e);
         }
         return o;
     }

@@ -1,31 +1,29 @@
 package com.hf.ciker.commons.utils;
 
+import com.hf.ciker.commons.exceptions.CikerRuntimeException;
+
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
 public class ReflectionUtil {
 
     public static Object newInstance(Class<?> cls){
-        Object instance = null;
         try {
-            instance = cls.newInstance();
+            return cls.newInstance();
         }catch (Exception e){
             LogUtil.error("new instance error",e);
-            throw new RuntimeException(e);
+            throw new CikerRuntimeException("new instance error", e);
         }
-        return instance;
     }
 
     public static Object invokeMethod(Object obj, Method method,Object...objs){
-        Object result = null;
         try {
             method.setAccessible(true);
-            result = method.invoke(obj,objs);
+            return method.invoke(obj,objs);
         } catch (Exception e){
             LogUtil.error("invokeMethod error",e);
-            throw new RuntimeException(e);
+            throw new CikerRuntimeException("invokeMethod error",e);
         }
-        return result;
     }
 
     public static void setField(Object obj, Field field, Object value){

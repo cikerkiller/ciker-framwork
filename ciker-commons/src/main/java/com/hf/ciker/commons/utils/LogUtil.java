@@ -6,9 +6,8 @@ import org.slf4j.LoggerFactory;
 import java.util.Objects;
 
 /**
- * 
+ * @desc 日志工具类
  * @author ciker
- * @desc   日志工具类
  * @date 2020-04-02 20:52
  *
  */

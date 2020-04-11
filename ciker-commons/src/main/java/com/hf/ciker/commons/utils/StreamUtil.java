@@ -8,7 +8,7 @@ import java.io.InputStreamReader;
 
 public class StreamUtil {
 
-    public static String getString(InputStream in){
+    public static String getDataFromStream(InputStream in){
         StringBuilder sbu = new StringBuilder();
         String line;
         try (BufferedReader  reader = new BufferedReader(new InputStreamReader(in))){
@@ -17,7 +17,6 @@ public class StreamUtil {
             }
         } catch (IOException e) {
             LogUtil.error("getString error",e);
-            throw new RuntimeException(e);
         }
         return sbu.toString();
     }

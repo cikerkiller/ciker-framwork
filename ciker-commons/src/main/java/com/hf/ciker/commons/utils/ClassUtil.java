@@ -1,18 +1,22 @@
 package com.hf.ciker.commons.utils;
 
+import com.google.common.collect.Lists;
+import com.hf.ciker.commons.exceptions.CikerRuntimeException;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
-import java.io.FileFilter;
 import java.io.IOException;
 import java.net.JarURLConnection;
 import java.net.URL;
-import java.util.Enumeration;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
+/**
+ * @desc 类加载工具类
+ * @author ciker
+ * @date 2020-04-11
+ */
 public class ClassUtil {
 
     public static ClassLoader getClassLoader(){
@@ -24,8 +28,8 @@ public class ClassUtil {
         try {
             clz = Class.forName(className,isInitialized,getClassLoader());
         } catch (ClassNotFoundException e) {
-            LogUtil.error("load class error",e);
-            throw new RuntimeException(e);
+            LogUtil.error("load class error, className : {}", className, e);
+            throw new CikerRuntimeException("load class error, className : {}", e, className);
         }
         return clz;
     }
@@ -62,21 +66,24 @@ public class ClassUtil {
                 }
             }
         } catch (IOException e) {
-            LogUtil.error("getClassSet error",e);
-            throw new RuntimeException(e);
+            LogUtil.error("getClassSet error, packageName : {}", packageName, e);
+            throw new CikerRuntimeException("getClassSet error, packageName : {}", e, packageName);
         }
         return classSet;
     }
 
+    private static List<File> fileFilter(String packagePath){
+        File[] files = new File(packagePath)
+                .listFiles( pathname -> (pathname.isFile()
+                        && pathname.getName().endsWith(".class"))
+                        || pathname.isDirectory()
+                );
+        return Lists.newArrayList(files);
+    }
+
     private static void addClass(Set<Class<?>> classSet,String packagePath,String packageName){
-        File[] files = new File(packagePath).listFiles(new FileFilter() {
-            @Override
-            public boolean accept(File pathname) {
-                return (pathname.isFile() && pathname.getName().endsWith(".class"))
-                        || pathname.isDirectory();
-            }
-        });
-        for(File file : files){
+        List<File> files = fileFilter(packagePath);
+        files.forEach(file -> {
             String fileName = file.getName();
             if(file.isFile()){
                 String className = fileName.substring(0,fileName.lastIndexOf("."));
@@ -95,7 +102,7 @@ public class ClassUtil {
                 }
                 addClass(classSet,subPackagePath,subPackageName);
             }
-        }
+        });
     }
     private static void doAddClass(Set<Class<?>> classSet, String className){
         classSet.add(loadClass(className,false));

@@ -16,6 +16,11 @@
             <groupId>com.hf.ciker</groupId>
             <artifactId>ciker-commons</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>cglib</groupId>
+            <artifactId>cglib</artifactId>
+        </dependency>
     </dependencies>
 
 

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hf.ciker.user.dao.PermissionMapper" >
+  <resultMap id="permissionResult" type="com.hf.ciker.user.po.Permission" >
+    <id column="id_ck_permission" property="idCkPermission" jdbcType="VARCHAR" />
+    <result column="permission_code" property="permissionCode" jdbcType="VARCHAR" />
+    <result column="permission_desc" property="permissionDesc" jdbcType="VARCHAR" />
+    <result column="created_by" property="createdBy" jdbcType="VARCHAR" />
+    <result column="created_date" property="createdDate" jdbcType="TIMESTAMP" />
+    <result column="updated_by" property="updatedBy" jdbcType="VARCHAR" />
+    <result column="updated_date" property="updatedDate" jdbcType="TIMESTAMP" />
+    <result column="is_delete" property="isDelete" jdbcType="CHAR" />
+  </resultMap>
+  <sql id="permissionColumns" >
+    id_ck_permission, permission_code, permission_desc, created_by, created_date, updated_by,
+    updated_date, is_delete
+  </sql>
+
+  <select id="findPermissions" resultMap="permissionResult" parameterType="list">
+    select <include refid="permissionColumns"/> from ck_permission
+    where is_delete='N' and id_ck_permission in
+    <foreach collection="rolePermissionList" open="(" close=")" separator="," item="rolePermission" index="index">
+        #{rolePermission.idCkPermission,jdbcType=VARCHAR}
+    </foreach>
+  </select>
+</mapper>

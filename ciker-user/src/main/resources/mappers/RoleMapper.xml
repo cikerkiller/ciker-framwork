@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hf.ciker.user.dao.RoleMapper" >
+  <resultMap id="roleResult" type="com.hf.ciker.user.po.Role" >
+    <id column="id_ck_role" property="idCkRole" jdbcType="VARCHAR" />
+    <result column="role_code" property="roleCode" jdbcType="VARCHAR" />
+    <result column="role_name" property="roleName" jdbcType="VARCHAR" />
+    <result column="created_by" property="createdBy" jdbcType="VARCHAR" />
+    <result column="created_date" property="createdDate" jdbcType="TIMESTAMP" />
+    <result column="updated_by" property="updatedBy" jdbcType="VARCHAR" />
+    <result column="updated_date" property="updatedDate" jdbcType="TIMESTAMP" />
+    <result column="is_delete" property="isDelete" jdbcType="CHAR" />
+  </resultMap>
+
+  <resultMap id="rolePermissionResult" type="com.hf.ciker.user.po.RolePermission" >
+    <id column="id_ck_role" property="idCkRole" jdbcType="VARCHAR" />
+    <result column="id_ck_permission" property="idCkPermission" jdbcType="VARCHAR" />
+    <result column="system_id" property="systemId" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <sql id="roleColumns" >
+    id_ck_role, role_code, role_name,created_by, created_date, updated_by,updated_date, is_delete
+  </sql>
+
+  <insert id="relevancePermission" parameterType="com.hf.ciker.user.po.RolePermission" >
+    insert into ck_role_permission(id_ck_role,id_ck_permission,system_id)
+    values( #{idCkRole,jdbcType=VARCHAR}, #{idCkPermission,jdbcType=VARCHAR},#{systemId,jdbcType=VARCHAR})
+  </insert>
+
+  <delete id="deletePermission" parameterType="com.hf.ciker.user.po.RolePermission">
+    delete from ck_role_permission
+    where id_ck_role=#{idCkRole,jdbcType=VARCHAR}
+    and id_ck_permission=#{idCkPermission,jdbcType=VARCHAR}
+    and system_id=#{systemId,jdbcType=VARCHAR}
+  </delete>
+
+
+  <select id="findRoles" parameterType="list" resultMap="roleResult">
+    select <include refid="roleColumns"/> from ck_role where is_delete='N' and id_ck_role in
+    <foreach collection="userRoleList" open="(" close=")" separator="," item="userRole" index="index">
+        #{userRole.idCkRole,jdbcType=VARCHAR}
+    </foreach>
+  </select>
+
+  <select id="findRolePermissions" resultMap="rolePermissionResult">
+    select id_ck_role,id_ck_permission,system_id from ck_role_permission where system_id=#{systemId,jdbcType=VARCHAR}
+    and id_ck_role in
+    <foreach collection="roleList" open="(" close=")" separator="," item="role" index="index">
+      #{role.idCkRole,jdbcType=VARCHAR}
+    </foreach>
+  </select>
+
+</mapper>

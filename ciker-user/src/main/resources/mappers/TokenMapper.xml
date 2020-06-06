@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hf.ciker.user.dao.TokenMapper">
+  <resultMap id="tokenResult" type="com.hf.ciker.user.po.Token">
+    <constructor>
+      <idArg column="user_id" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="token" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="expireTime" javaType="java.time.LocalDateTime" jdbcType="TIMESTAMP" typeHandler="org.apache.ibatis.type.LocalDateTimeTypeHandler" />
+      <arg column="updateTime" javaType="java.time.LocalDateTime" jdbcType="TIMESTAMP" typeHandler="org.apache.ibatis.type.LocalDateTimeTypeHandler" />
+    </constructor>
+  </resultMap>
+  <sql id="tokenColumn">
+    user_id, token, expireTime, updateTime
+  </sql>
+  <select id="findByUserId" parameterType="java.lang.String" resultMap="tokenResult">
+    select 
+    <include refid="tokenColumn" />
+    from ck_token
+    where user_id = #{userId,jdbcType=VARCHAR}
+  </select>
+  <select id="findByToken" parameterType="java.lang.String" resultMap="tokenResult">
+    select
+    <include refid="tokenColumn" />
+    from ck_token
+    where token = #{token,jdbcType=VARCHAR}
+  </select>
+
+  <insert id="insertToken" parameterType="com.hf.ciker.user.po.Token">
+    insert into ck_token (user_id, token, expireTime, 
+      updateTime)
+    values (#{userId,jdbcType=VARCHAR}, #{token,jdbcType=VARCHAR}, #{expireTime,jdbcType=TIMESTAMP},
+      #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+
+  <update id="updateToken" parameterType="com.hf.ciker.user.po.Token">
+    update ck_token
+    set token = #{token,jdbcType=VARCHAR},
+      expireTime = #{expireTime,jdbcType=TIMESTAMP},
+      updateTime = #{updateTime,jdbcType=TIMESTAMP}
+    where user_id = #{userId,jdbcType=VARCHAR}
+  </update>
+
+</mapper>

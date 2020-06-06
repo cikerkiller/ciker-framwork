@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hf.ciker.user.dao.UserMapper" >
+  <resultMap id="userResult" type="com.hf.ciker.user.po.User" >
+    <id column="user_id" property="userId" jdbcType="VARCHAR" />
+    <result column="password" property="password" jdbcType="VARCHAR" />
+    <result column="created_by" property="createdBy" jdbcType="VARCHAR" />
+    <result column="created_date" property="createdDate" jdbcType="TIMESTAMP" />
+    <result column="updated_by" property="updatedBy" jdbcType="VARCHAR" />
+    <result column="updated_date" property="updatedDate" jdbcType="TIMESTAMP" />
+    <result column="is_delete" property="isDelete" jdbcType="CHAR" />
+  </resultMap>
+  <resultMap id="userRoleResult" type="com.hf.ciker.user.po.UserRole" >
+    <id column="user_id" property="userId" jdbcType="VARCHAR" />
+    <result column="id_ck_role" property="idCkRole" jdbcType="VARCHAR" />
+    <result column="system_id" property="systemId" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <sql id="userColumns" >
+    user_id, password, created_by, created_date, updated_by, updated_date, is_delete
+  </sql>
+
+  <select id="findUser" resultMap="userResult">
+    select 
+    <include refid="userColumns" />
+    from ck_user
+    where user_id = #{userId,jdbcType=VARCHAR}
+    <if test="isDelete != null" >
+      and is_delete = #{isDelete,jdbcType=VARCHAR}
+    </if>
+  </select>
+
+  <insert id="insert" parameterType="com.hf.ciker.user.po.User" >
+    insert into ck_user (user_id, password, created_by, 
+      created_date, updated_by, updated_date)
+    values (#{userId,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, #{createdBy,jdbcType=VARCHAR}, 
+      #{createdDate,jdbcType=TIMESTAMP}, #{updatedBy,jdbcType=VARCHAR}, #{updatedDate,jdbcType=TIMESTAMP}
+     )
+  </insert>
+
+  <update id="updateUser" parameterType="com.hf.ciker.user.po.User" >
+    update ck_user
+    <set >
+      updated_date = CURRENT_TIMESTAMP,
+      updated_by = #{updatedBy,jdbcType=VARCHAR},
+      <if test="password != null" >
+        password = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="isDelete != null" >
+        is_delete = #{isDelete,jdbcType=CHAR},
+      </if>
+    </set>
+    where user_id = #{userId,jdbcType=VARCHAR}
+  </update>
+
+  <insert id="relevanceRole" parameterType="com.hf.ciker.user.po.UserRole" >
+    insert into ck_user_role (user_id, id_ck_role,system_id)
+    values (#{userId,jdbcType=VARCHAR}, #{idCkRole,jdbcType=VARCHAR}, #{systemId,jdbcType=VARCHAR})
+  </insert>
+
+  <delete id="deleteUserRole" parameterType="com.hf.ciker.user.po.UserRole">
+    delete from ck_user_role
+    where user_id=#{userId,jdbcType=VARCHAR}
+    and id_ck_role=#{idCkRole,jdbcType=VARCHAR}
+    and system_id=#{systemId,jdbcType=VARCHAR}
+  </delete>
+
+  <select id="findUserRoles" resultMap="userRoleResult">
+    select user_id, id_ck_role, system_id from ck_user_role
+    where user_id=#{userId,jdbcType=VARCHAR}
+    and system_id=#{systemId,jdbcType=VARCHAR}
+  </select>
+
+
+</mapper>
